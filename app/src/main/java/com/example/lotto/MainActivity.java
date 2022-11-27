@@ -3,9 +3,11 @@ package com.example.lotto;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,8 +17,9 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     ImageButton button;
-    TextView textView;
+    TextView txtnum, txtval;
     ImageButton home;
+    LinearLayout linear;
 
     List<String> cardValues,cardnumber;
 
@@ -25,14 +28,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int red = getIntent().getIntExtra("red",255);
+        int green = getIntent().getIntExtra("green",255);
+        int blue = getIntent().getIntExtra("blue",255);
+
+        linear = findViewById(R.id.linear);
         button = findViewById(R.id.button);
-        textView = findViewById(R.id.textView);
+        txtnum = findViewById(R.id.txtnum);
+        txtval = findViewById(R.id.txtval);
         home = findViewById(R.id.home_btn);
+
+        linear.setBackgroundColor(Color.rgb(red, green, blue));
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, homeActivity.class);
+                intent.putExtra("red", red);
+                intent.putExtra("green", green);
+                intent.putExtra("blue", blue);
                 startActivity(intent);
             }
         });
@@ -44,34 +58,21 @@ public class MainActivity extends AppCompatActivity {
         cardValues.add("주위 사람들에게 다정해져보세요!");
         cardValues.add("당신의 선택이 중요합니다!");
         cardValues.add("자신에게 더 집중해보세요!");
-        cardValues.add("무엇이든 다 잘될 겁니다!");
-        cardValues.add("자신에 가까운 사람을 조심하세요!");
+        cardValues.add("무엇이든 다 잘 될 겁니다!");
+        cardValues.add("자신과 가까운 사람을 조심하세요!");
         cardValues.add("불안해 하지 마세요!");
         cardValues.add("집중하세요!");
         cardValues.add("누군가가 다가올 겁니다!");
         cardValues.add("주위를 둘러보세요!");
-        cardValues.add("귀인이 찾아올겁니다!");
+        cardValues.add("귀인이 찾아올 겁니다!");
         cardValues.add("모두에게 친절하지 마세요!");
         cardValues.add("물을 조심하세요!");
-        cardValues.add("모든지 조심!");
-        cardValues.add("오늘을 쉬는게 좋아요!");
+        cardValues.add("뭐든지 조심!");
+        cardValues.add("오늘은 쉬는게 좋아요!");
 
-        cardnumber.add("12");
-        cardnumber.add("70");
-        cardnumber.add("56");
-        cardnumber.add("79");
-        cardnumber.add("100");
-        cardnumber.add("89");
-        cardnumber.add("96");
-        cardnumber.add("99");
-        cardnumber.add("43");
-        cardnumber.add("30");
-        cardnumber.add("92");
-        cardnumber.add("57");
-        cardnumber.add("78");
-        cardnumber.add("16");
-        cardnumber.add("33");
-
+        for(int i = 0; i<100; i++){
+            cardnumber.add(Integer.toString(i));
+        }
 
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -79,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 String randomValue = cardValues.get(r.nextInt(cardValues.size()));
                 String randomnumbers = cardnumber.get(r.nextInt(cardnumber.size()));
 
-                textView.setText("\n"+"                 "+randomnumbers+"\n"+"\n"+"\n"+randomValue);
+                txtnum.setText("행운의 숫자 : " + randomnumbers);
+                txtval.setText(randomValue);
             }
         });
     }
